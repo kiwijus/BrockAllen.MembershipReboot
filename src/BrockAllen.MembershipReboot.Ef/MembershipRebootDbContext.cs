@@ -4,6 +4,7 @@
  */
 
 using BrockAllen.MembershipReboot.Relational;
+using Microsoft.Data.Entity;
 using System.Data.Entity;
 
 namespace BrockAllen.MembershipReboot.Ef
@@ -23,19 +24,29 @@ namespace BrockAllen.MembershipReboot.Ef
         }
 
         public MembershipRebootDbContext(string nameOrConnectionString, string schemaName)
-            : base(nameOrConnectionString)
+            : base()//nameOrConnectionString)
         {
+            this.NameOrConnectionString = nameOrConnectionString;
+
             this.SchemaName = schemaName;
             this.RegisterUserAccountChildTablesForDelete<TUserAccount>();
             this.RegisterGroupChildTablesForDelete<TGroup>();
         }
 
         public string SchemaName { get; private set; }
+        public string NameOrConnectionString { get; private set; }
 
         public DbSet<TUserAccount> Users { get; set; }
         public DbSet<TGroup> Groups { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.UseSqlServer(NameOrConnectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ConfigureMembershipRebootUserAccounts<TUserAccount>(this.SchemaName);
             modelBuilder.ConfigureMembershipRebootGroups<TGroup>(this.SchemaName);

@@ -4,6 +4,7 @@
  */
 
 using BrockAllen.MembershipReboot.Relational;
+using Microsoft.Data.Entity;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -38,7 +39,9 @@ namespace BrockAllen.MembershipReboot.Ef
 
         public override TAccount Create()
         {
-            return items.Create();
+            var entity = new RelationalUserAccount() as TAccount;
+            db.Set<TAccount>().Attach(entity);
+            return entity;
         }
 
         public override void Add(TAccount item)

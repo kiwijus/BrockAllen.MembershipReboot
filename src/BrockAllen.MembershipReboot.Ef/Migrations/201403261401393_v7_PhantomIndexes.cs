@@ -1,11 +1,12 @@
 namespace BrockAllen.MembershipReboot.Ef.Migrations
 {
+    using Microsoft.Data.Entity.Migrations;
     using System;
-    using System.Data.Entity.Migrations;
-    
-    public partial class v7_PhantomIndexes : DbMigration
+    using JetBrains.Annotations;
+
+    public partial class v7_PhantomIndexes : Migration
     {
-        public override void Up()
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             //CreateIndex("dbo.GroupChilds", "ParentKey");
             //CreateIndex("dbo.UserClaims", "ParentKey");
@@ -15,8 +16,8 @@ namespace BrockAllen.MembershipReboot.Ef.Migrations
             //CreateIndex("dbo.TwoFactorAuthTokens", "ParentKey");
             //CreateIndex("dbo.UserCertificates", "ParentKey");
         }
-        
-        public override void Down()
+
+        protected override void Down(MigrationBuilder migrationBuilder)
         {
             //DropIndex("dbo.UserCertificates", new[] { "ParentKey" });
             //DropIndex("dbo.TwoFactorAuthTokens", new[] { "ParentKey" });

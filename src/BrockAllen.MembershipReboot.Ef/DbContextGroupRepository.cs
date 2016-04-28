@@ -3,6 +3,7 @@
  * see license.txt
  */
 
+using Microsoft.Data.Entity;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -34,7 +35,9 @@ namespace BrockAllen.MembershipReboot.Ef
 
         public override TGroup Create()
         {
-            return items.Create();
+            var entity = new RelationalGroup() as TGroup;
+            db.Set<TGroup>().Attach(entity);
+            return entity;
         }
 
         public override void Add(TGroup item)
